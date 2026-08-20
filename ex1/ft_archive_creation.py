@@ -11,7 +11,7 @@ def read_file(filename: str) -> None:
         text = f.read()
         print("---\n")
         print(text)
-        print("\n---")
+        print("---")
         f.close()
         print(f"File '{filename}' closed")
     except (FileNotFoundError, PermissionError) as error:
@@ -21,9 +21,8 @@ def read_file(filename: str) -> None:
     print("\nTransform data:")
     print("---\n")
     new_text = text.replace("\n", "#\n")
-    new_text = new_text + "#"
     print(new_text)
-    print("\n---")
+    print("---")
 
     new_name = input("Enter new file name (or empty): ")
     if new_name:
@@ -41,7 +40,7 @@ def read_file(filename: str) -> None:
 
 
 def main() -> None:
-    if len(sys.argv) == 1:
+    if len(sys.argv) != 2:
         print("Usage: ft_ancient_text.py <file>")
     else:
         print("=== Cyber Archives Recovery & Preservation ===")

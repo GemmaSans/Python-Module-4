@@ -10,7 +10,7 @@ def read_file(filename: str) -> None:
         f: typing.IO = open(filename)
         print("---\n")
         print(f.read())
-        print("\n---")
+        print("---")
         f.close()
         print(f"File '{filename}' closed")
     except (FileNotFoundError, PermissionError) as error:
