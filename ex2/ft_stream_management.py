@@ -15,7 +15,8 @@ def read_file(filename: str) -> None:
         f.close()
         print(f"File '{filename}' closed")
     except (FileNotFoundError, PermissionError) as error:
-        print(f"Error opening file '{filename}': {error}")
+        sys.stderr.write(f"[STDERR] Error opening file "
+                         f"'{filename}': {error}\n")
         return
 
     print("\nTransform data:")
@@ -24,7 +25,9 @@ def read_file(filename: str) -> None:
     print(new_text)
     print("---")
 
-    new_name = input("Enter new file name (or empty): ")
+    sys.stdout.write("Enter new file name (or empty): ")
+    sys.stdout.flush()
+    new_name = sys.stdin.readline().strip("\n")
     if new_name:
         try:
             print(f"Saving data to '{new_name}'")
@@ -33,7 +36,8 @@ def read_file(filename: str) -> None:
             print(f"Data saved in file {new_name}")
             f2.close()
         except (FileNotFoundError, PermissionError) as error:
-            print(f"Error opening file '{new_name}': {error}")
+            sys.stderr.write("[STDERR] Error opening file "
+                             f"'{new_name}': {error}\n")
             print("Data not saved.")
     else:
         print("Data not saved.")
