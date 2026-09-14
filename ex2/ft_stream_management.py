@@ -36,8 +36,7 @@ def transform_file(text: str) -> None:
 
     sys.stdout.write("Enter new file name (or empty): ")
     sys.stdout.flush()
-    new_name = sys.stdin.readline().rstrip("\n")
-    new_name = sys.stdin.readline().rstrip("\r")
+    new_name = sys.stdin.readline().rstrip("\n\r")
     if not new_name:
         print("Data not saved.")
         return
