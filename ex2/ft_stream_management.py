@@ -7,7 +7,7 @@ import typing
 def read_file(filename: str) -> None:
     try:
         print(f"Accessing file '{filename}'")
-        f: typing.IO = open(filename)
+        f: typing.IO[str] = open(filename)
         text = f.read()
         print("---\n")
         print(text)
@@ -31,7 +31,7 @@ def read_file(filename: str) -> None:
     if new_name:
         try:
             print(f"Saving data to '{new_name}'")
-            f2: typing.IO = open(new_name, "w")
+            f2: typing.IO[str] = open(new_name, "w")
             f2.write(new_text)
             print(f"Data saved in file {new_name}")
             f2.close()

@@ -7,7 +7,7 @@ import typing
 def read_file(filename: str) -> None:
     try:
         print(f"Accessing file '{filename}'")
-        f: typing.IO = open(filename)
+        f: typing.IO[str] = open(filename)
         print("---\n")
         print(f.read())
         print("---")
