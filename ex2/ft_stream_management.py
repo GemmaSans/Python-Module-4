@@ -4,21 +4,30 @@ import sys
 import typing
 
 
-def read_file(filename: str) -> None:
+def read_file(filename: str) -> typing.Optional[str]:
     try:
         print(f"Accessing file '{filename}'")
         f: typing.IO[str] = open(filename)
+    except OSError as error:
+        sys.stderr.write(f"[STDERR] Error opening file "
+                         f"'{filename}': {error}\n")
+        return None
+    try:
         text = f.read()
         print("---\n")
         print(text)
         print("---")
-        f.close()
-        print(f"File '{filename}' closed")
-    except (FileNotFoundError, PermissionError) as error:
-        sys.stderr.write(f"[STDERR] Error opening file "
+        return text
+    except UnicodeDecodeError as error:
+        sys.stderr.write(f"[STDERR] Error reading file "
                          f"'{filename}': {error}\n")
-        return
+        return None
+    finally:
+        f.close()
+        print(f"File '{filename}' closed.")
 
+
+def transform_file(text: str) -> None:
     print("\nTransform data:")
     print("---\n")
     new_text = text.replace("\n", "#\n")
@@ -27,28 +36,38 @@ def read_file(filename: str) -> None:
 
     sys.stdout.write("Enter new file name (or empty): ")
     sys.stdout.flush()
-    new_name = sys.stdin.readline().strip("\n")
-    if new_name:
-        try:
-            print(f"Saving data to '{new_name}'")
-            f2: typing.IO[str] = open(new_name, "w")
-            f2.write(new_text)
-            print(f"Data saved in file {new_name}")
-            f2.close()
-        except (FileNotFoundError, PermissionError) as error:
-            sys.stderr.write("[STDERR] Error opening file "
-                             f"'{new_name}': {error}\n")
-            print("Data not saved.")
-    else:
+    new_name = sys.stdin.readline().rstrip("\n")
+    new_name = sys.stdin.readline().rstrip("\r")
+    if not new_name:
         print("Data not saved.")
+        return
+    try:
+        print(f"Saving data to '{new_name}'.")
+        f2: typing.IO[str] = open(new_name, "w")
+    except OSError as error:
+        sys.stderr.write(f"[STDERR] Error opening file "
+                         f"'{new_name}': {error}\n")
+        print("Data not saved.")
+        return
+    try:
+        f2.write(new_text)
+        print(f"Data saved in file '{new_name}'.")
+    except OSError as error:
+        sys.stderr.write(f"[STDERR] Error writing file "
+                         f"'{new_name}': {error}\n")
+        print("Data not saved.")
+    finally:
+        f2.close()
 
 
 def main() -> None:
     if len(sys.argv) != 2:
-        print("Usage: ft_ancient_text.py <file>")
+        print("Usage: ft_stream_management.py <file>")
     else:
         print("=== Cyber Archives Recovery & Preservation ===")
-        read_file(sys.argv[1])
+        text = read_file(sys.argv[1])
+        if text is not None:
+            transform_file(text)
 
 
 if __name__ == "__main__":

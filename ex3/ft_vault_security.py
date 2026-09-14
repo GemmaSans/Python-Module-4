@@ -6,12 +6,18 @@ def secure_archive(filename: str,
     try:
         with open(filename, action) as file:
             if action == "w":
-                file.write(content)
-                return (True, "Content successfully written to file")
+                try:
+                    file.write(content)
+                    return (True, "Content successfully written to file")
+                except OSError as error:
+                    return (False, str(error))
             else:
-                text = file.read()
-                return (True, text)
-    except (FileNotFoundError, PermissionError) as error:
+                try:
+                    text = file.read()
+                    return (True, text)
+                except UnicodeDecodeError as error:
+                    return (False, str(error))
+    except OSError as error:
         return (False, str(error))
 
 
@@ -23,7 +29,7 @@ def main() -> None:
     print()
 
     print("Using 'secure_archive' to read from an inaccessible file:")
-    print(secure_archive("/etc/master.passwd"))
+    print(secure_archive("no_perm.txt"))
     print()
 
     print("Using 'secure_archive' to read from a regular file:")

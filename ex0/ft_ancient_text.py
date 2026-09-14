@@ -8,13 +8,19 @@ def read_file(filename: str) -> None:
     try:
         print(f"Accessing file '{filename}'")
         f: typing.IO[str] = open(filename)
-        print("---\n")
-        print(f.read())
-        print("---")
-        f.close()
-        print(f"File '{filename}' closed")
-    except (FileNotFoundError, PermissionError) as error:
+    except OSError as error:
         print(f"Error opening file '{filename}': {error}")
+        return
+    try:
+        text = f.read()
+        print("---\n")
+        print(text)
+        print("---")
+    except UnicodeDecodeError as error:
+        print(f"Error reading file '{filename}': {error}")
+    finally:
+        f.close()
+        print(f"File '{filename}' closed.")
 
 
 def main() -> None:
