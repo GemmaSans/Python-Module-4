@@ -15,7 +15,7 @@ def read_file(filename: str) -> None:
         text = f.read()
         print("---\n")
         print(text)
-        print("---")
+        print("\n---")
     except UnicodeDecodeError as error:
         print(f"Error reading file '{filename}': {error}")
     finally:

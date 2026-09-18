@@ -16,7 +16,7 @@ def read_file(filename: str) -> typing.Optional[str]:
         text = f.read()
         print("---\n")
         print(text)
-        print("---")
+        print("\n---")
         return text
     except UnicodeDecodeError as error:
         sys.stderr.write(f"[STDERR] Error reading file "
@@ -29,8 +29,10 @@ def read_file(filename: str) -> typing.Optional[str]:
 
 def transform_file(text: str) -> None:
     print("\nTransform data:")
+    lines = text.splitlines()
+    transformed = [line + "#" for line in lines]
+    new_text = "\n".join(transformed)
     print("---\n")
-    new_text = text.replace("\n", "#\n")
     print(new_text)
     print("---")
 

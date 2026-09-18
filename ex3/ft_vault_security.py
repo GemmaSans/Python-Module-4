@@ -11,12 +11,14 @@ def secure_archive(filename: str,
                     return (True, "Content successfully written to file")
                 except OSError as error:
                     return (False, str(error))
-            else:
+            elif action == "r":
                 try:
                     text = file.read()
                     return (True, text)
                 except UnicodeDecodeError as error:
                     return (False, str(error))
+            else:
+                return (False, "Invalid action")
     except OSError as error:
         return (False, str(error))
 
